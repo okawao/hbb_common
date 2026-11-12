@@ -108,6 +108,10 @@ message PunchHoleSent {
   int32 upnp_port = 6;
   bytes socket_addr_v6 = 7;
   string webrtc_sdp_answer = 8;
+  // Extra addresses this punch socket is reachable on, `AddrMangle`-encoded, beyond the one the
+  // server observes for itself. Relayed to the controller as-is; a server that does not know the
+  // field drops it and the punch falls back to that single address alone.
+  repeated bytes socket_addr_list = 9;
 }
 
 message RegisterPk {
@@ -154,6 +158,8 @@ message PunchHoleResponse {
   int32 upnp_port = 10;
   bytes socket_addr_v6 = 11;
   string webrtc_sdp_answer = 12;
+  // Echo of `PunchHoleSent.socket_addr_list`.
+  repeated bytes socket_addr_list = 13;
 }
 
 message ConfigUpdate {
