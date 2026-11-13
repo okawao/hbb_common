@@ -44,6 +44,10 @@ message PunchHoleRequest {
   // the webrtc:// payload): under force_relay it tells the peer whether the relay is
   // transport-forced (WebSocket — answer may use full ICE) or policy (Relay-only + TURN).
   string webrtc_sdp_offer = 12;
+  // Extra addresses this peer's punching socket is reachable on, `AddrMangle`-encoded, beyond the
+  // one the server observes for itself. Handed to the called peer with the punch; a server that
+  // does not know the field drops it and that peer punches the observed address alone.
+  repeated bytes socket_addr_list = 13;
 }
 
 message ControlPermissions {
@@ -81,6 +85,8 @@ message PunchHole {
   ControlPermissions control_permissions = 8;
   ControlledContext controlled_context = 9;
   string webrtc_sdp_offer = 10;
+  // The caller's own punching addresses, relayed from its `PunchHoleRequest` as-is.
+  repeated bytes socket_addr_list = 11;
 }
 
 message TestNatRequest {
